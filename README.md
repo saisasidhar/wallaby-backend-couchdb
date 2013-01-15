@@ -43,7 +43,12 @@ Now we can connect to an existing CouchDB database:
 def run():
     # Create database client object
     from wallaby.backends.couchdb import Database
-    db = Database("<name of database>", username="<username>", password="<password>", url="http://localhost:5984")
+    db = Database(
+        "<name of database>", 
+        username="<username>", 
+        password="<password>", 
+        url="http://localhost:5984"
+    )
 
     # Query database info in an async manner
     info = yield db.info()
