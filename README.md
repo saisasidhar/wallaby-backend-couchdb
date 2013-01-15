@@ -15,8 +15,8 @@ pip install wallaby-backend-couchdb
 How to use
 ==========
 
-The library is based on twisted's asynchronous pattern. The use the library in an asynchronous fassion you first need to create
-an reactor based application:
+The library is based on twisted's asynchronous pattern. To use the library in an asynchronous fassion you 
+first need to create an reactor based application:
  
 ```python
 from twisted.internet import defer
