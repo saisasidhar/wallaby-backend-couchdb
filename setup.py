@@ -5,13 +5,12 @@ from setuptools import setup, find_packages
 import os
 
 setup(name='wallaby-backend-couchdb',
-      version='0.1.27',
+      version='0.1.28',
       url='https://github.com/FreshXOpenSource/wallaby-backend-couchdb',
       author='FreshX GbR',
       author_email='wallaby@freshx.de',
       license='BSD',
       description='Wallaby backend for CouchDB.',
-      long_description=open('README.md').read(),
       package_data={'': ['LICENSE', 'AUTHORS', 'README.md']},
       classifiers=[
         'Development Status :: 4 - Beta',
