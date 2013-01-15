@@ -8,4 +8,6 @@ Installation
 
 You can install the couchdb backend with pip
 
- pip install wallaby-backend-couchdb
+```bash
+pip install wallaby-backend-couchdb
+```
