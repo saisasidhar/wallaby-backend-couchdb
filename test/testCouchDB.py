@@ -23,9 +23,9 @@ class WallabyCouchDBTest(unittest.TestCase):
         }
 
         import wallaby.backends.couchdb as couch
+        self._db = couch.Database(self._dbName, url="http://localhost:5984")
         # self._db = couch.Database.getDatabase(self._dbName)
-        self._db = couch.Database.getDatabase(self._dbName)
-        couch.Database.setURLForDatabase(self._dbName, "http://localhost:5984")
+        # couch.Database.setURLForDatabase(self._dbName, "http://localhost:5984")
 
     @defer.inlineCallbacks
     def getDoc(self, name):

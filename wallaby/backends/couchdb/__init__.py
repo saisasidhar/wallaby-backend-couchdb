@@ -156,8 +156,8 @@ class Database(object):
     def destroy(self):
         return self.request('DELETE', "", body=DataProducer(""))
 
-    def __init__(self, name, user=None, password=None):
-        self._url = 'http://localhost:5984'
+    def __init__(self, name, user=None, password=None, url='http://localhost:5984'):
+        self._url = url
         self._name = name
         self._changesCBs = {}
         self._failedRequests = []
@@ -169,7 +169,6 @@ class Database(object):
         self._user = None
         self._password = None
         self._authHeader = None
-        
 
         if user != None and password != None:
             self.setCredentials(user, password)
