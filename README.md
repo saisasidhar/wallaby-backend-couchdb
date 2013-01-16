@@ -62,6 +62,26 @@ def run():
     reactor.stop()
 ```
 
+Create and delete database
+--------------------------
+
+With the required permissions you could easily create and destroy databases
+
+```python
+    newdb = Database(
+        "<name of new database>", 
+        username="<username>", 
+        password="<password>", 
+        url="http://localhost:5984"
+    )
+
+    # Create the new database 
+    res = yield newdb.create()
+
+    # Destroy the new database
+    res = yield newdb.destroy()
+```
+
 Read and write document
 -----------------------
 
