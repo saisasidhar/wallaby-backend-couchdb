@@ -3,6 +3,8 @@ Wallaby backend for CouchDB
 
 This package provides an asynchronous python interface to CouchDB (using twisted).
 
+For more information on wallaby visit http://wlby.freshx.de
+
 Installation
 ============
 
@@ -153,7 +155,7 @@ Changes
     # register callback function for filtered changes
     db.changes(cb=callback, since=12345, filter="couchappdoc/all")
 
-    # register callback function for filtered changes (only works in CouchDB 1.2)
+    # register callback function for view changes (only works in CouchDB 1.2)
     db.changes(cb=callback, since=12345, filter="_view", view="couchappdoc/viewname")
 
     # unregister first callback
@@ -162,3 +164,4 @@ Changes
     # unregister second callback
     db.changes(since=12345, filter="_view", view="couchappdoc/viewname")
 ```
+
