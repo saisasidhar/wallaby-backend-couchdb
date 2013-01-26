@@ -332,9 +332,9 @@ class Database(object):
     def _get(self, id, d, rev=None):
 
         if rev:
-            response = yield self.request('GET', path=id, rev=rev)
+            response = yield self.request('GET', path=urllib.urlencode(id), rev=rev)
         else:
-            response = yield self.request('GET', path=id, conflicts=True)
+            response = yield self.request('GET', path=urllib.urlencode(id), conflicts=True)
 
         if '_id' not in response or 'error' in response:
             response = None
@@ -366,7 +366,7 @@ class Database(object):
         jsonString = json.dumps(doc)
 
         if '_id' in doc:
-            response = yield self.request('PUT', path=doc['_id'], body=DataProducer(jsonString), **ka)
+            response = yield self.request('PUT', path=urllib.urlencode(doc['_id']), body=DataProducer(jsonString), **ka)
         elif 'docs' in doc:
             response = yield self.request('POST', path='_bulk_docs', headers={'Content-Type': ['application/json']}, body=DataProducer(jsonString), **ka)
 
@@ -406,7 +406,7 @@ class Database(object):
     def _delete(self, doc, d):
         jsonString = json.dumps(doc)
 
-        response = yield self.request('DELETE', path=doc['_id'], rev=doc['_rev'])
+        response = yield self.request('DELETE', path=urllib.urlencode(doc['_id']), rev=doc['_rev'])
 
         if 'error' in response:
             d.errback(UnknownError(response))
@@ -416,12 +416,12 @@ class Database(object):
     def delete_attachment(self, doc, filename):
         if not self.assertDocHasAttachment(doc, filename): return self.__error()
 
-        return self.request('DELETE', path=doc['_id']+'/'+filename, rev=doc['_rev'])
+        return self.request('DELETE', path=urllib.urlencode(doc['_id'])+'/'+urllib.urlencode(filename), rev=doc['_rev'])
 
     def get_attachment(self, doc, filename):
         if not self.assertDocHasAttachment(doc, filename): return self.__error()
 
-        return self.request('GET', path=doc['_id']+'/'+filename, protocol=RawProtocol)
+        return self.request('GET', path=urllib.urlencode(doc['_id'])+'/'+urllib.urlencode(filename), protocol=RawProtocol)
 
     def put_attachment(self, doc, filename, data, contentType='application/octet-stream'):
         if not self.assertIsDoc(doc) or not self.assertDocHasRev(doc): return self.__error()
@@ -435,7 +435,7 @@ class Database(object):
 
     @defer.inlineCallbacks
     def _put_attachment(self, doc, filename, data, contentType, d):
-        response = yield self.request('PUT', path=doc['_id']+'/'+filename, rev=doc['_rev'], body=DataProducer(data), headers={'Content-Type':[contentType]})
+        response = yield self.request('PUT', path=urllib.urlencode(doc['_id'])+'/'+urllib.urlencode(filename), rev=doc['_rev'], body=DataProducer(data), headers={'Content-Type':[contentType]})
 
         if 'rev' in response:
             doc['_rev'] = response['rev']
