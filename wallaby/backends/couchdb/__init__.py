@@ -43,6 +43,11 @@ class ChangesProtocol(Protocol):
 
                 try:
                     obj = json.loads(msg)
+                    if 'error' in obj: 
+                        # Reconnect
+                        self.transport.stopProducing()
+                        return
+
                     self._db._newChange(self._id, obj)
                 except Exception as e:
                     print "Exception while parsing", msg, e
@@ -61,8 +66,8 @@ class ChangesProtocol(Protocol):
             self._db.removeCallbacks(self._id, close=False)
 
         #Reconnect
-        from twisted.internet import reactor
-        reactor.callLater(0, self._db.changes, self._id)
+        # from twisted.internet import reactor
+        # reactor.callLater(0, self._db.changes, self._id)
 
 class Closer(Protocol):
     def makeConnection(self, producer):
@@ -473,6 +478,7 @@ class Database(object):
     def removeCallbacks(self, __id, close=True):
         # Wake up pending callbacks
         for cb in self._changesCBs[__id]:
+            # print __id, cb
             cb(None, viewID=__id)
 
         del self._changesCBs[__id]
@@ -529,7 +535,7 @@ class Database(object):
 
             if 'error' in info and info['error'] == 'unauthorized':
                 from twisted.internet import reactor
-                reactor.callLater(1, self.changes, filter=filter, view=view, redo=True) #retry in one second
+                reactor.callLater(1, self.changes, cb=cb, since=since, filter=filter, view=view, redo=True) #retry in one second
                 return
 
             self._lastSeq[__id] = info['update_seq']
@@ -569,7 +575,7 @@ class Database(object):
                 self.connectionStatusChanged(Database.DISCONNECTED)
                 self._changesRunning[__id] = False
                 from twisted.internet import reactor
-                reactor.callLater(1, self.changes, filter=filter, view=view, redo=True) #retry in one second
+                reactor.callLater(1, self.changes, cb=cb, since=since, filter=filter, view=view, redo=True) #retry in one second
 
 
     def _newChange(self, id, change):
