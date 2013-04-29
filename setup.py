@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 import os
 
 setup(name='wallaby-backend-couchdb',
-      version='0.1.33',
+      version='0.1.34',
       url='https://github.com/FreshXOpenSource/wallaby-backend-couchdb',
       author='FreshX GbR',
       author_email='wallaby@freshx.de',

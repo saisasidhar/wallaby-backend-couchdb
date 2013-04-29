@@ -50,7 +50,7 @@ class ChangesProtocol(Protocol):
 
                     self._db._newChange(self._id, obj)
                 except Exception as e:
-                    print "Exception while parsing", msg, e
+                    print "Exception while parsing", self._id, msg, e
 
     def close(self):
         self._closed = True
