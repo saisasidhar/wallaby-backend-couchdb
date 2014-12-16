@@ -258,14 +258,13 @@ class Database(object):
                 else:
                     if isinstance(v, bool):
                         if v:
-                            kv[k] = 'true'
+                            kv[k] = json.dumps('true')
                         else:
-                            kv[k] = 'false'
+                            kv[k] = json.dumps('false')
                     else:
-                        kv[k] = v
+                        kv[k] = json.dumps(v)
 
             url += '?'+urllib.urlencode(kv)
-
         try:
             # print "REQUEST", method, str(url), body
             response = yield self._agent.request(
