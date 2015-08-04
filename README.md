@@ -123,7 +123,7 @@ Attachment handling
     content = open('test.png').read()
 
     # Now we can attach this file to an existing document
-    res = yield db.put_attachment(doc, 'newimage.png', content, content-type='image/png')
+    res = yield db.put_attachment(doc, 'newimage.png', content, contentType='image/png')
 
     # And load from database again
     content = yield db.get_attachment(doc, 'newimage.png')
