@@ -1,4 +1,4 @@
-# Copyright (c) by it's authors. 
+# Copyright (c) by it's authors.
 # Some rights reserved. See LICENSE, AUTHORS.
 
 from twisted.web.client import Agent
@@ -43,7 +43,7 @@ class ChangesProtocol(Protocol):
 
                 try:
                     obj = json.loads(msg)
-                    if 'error' in obj: 
+                    if 'error' in obj:
                         # Reconnect
                         self.transport.stopProducing()
                         return
@@ -187,7 +187,7 @@ class Database(object):
 
     def proto(self):
         if not self._url: return None
-    
+
         m = re.match(r'(^.*?)://(.*?):(.*?)', self._url)
         if m == None: return None
 
@@ -195,7 +195,7 @@ class Database(object):
 
     def port(self):
         if not self._url: return None
-    
+
         m = re.match(r'(^.*?)://(.*?):(.*?)', self._url)
         if m == None: return None
 
@@ -203,7 +203,7 @@ class Database(object):
 
     def host(self):
         if not self._url: return None
-    
+
         m = re.match(r'(^.*?)://(.*?):(.*?)', self._url)
         if m == None: return None
 
@@ -285,7 +285,7 @@ class Database(object):
                 reactor.callLater(1, self._request, d, method, path, body, headers, protocol, **ka)
             elif returnOnError:
                 d.errback(e)
-            else: 
+            else:
                 self._failedRequests.append((d, method, path, body, headers, protocol, ka))
 
     def connectionEstablished(self):
@@ -339,6 +339,27 @@ class Database(object):
             response = yield self.request('GET', path=urllib.quote(id, ""), rev=rev)
         else:
             response = yield self.request('GET', path=urllib.quote(id, ""), conflicts=True)
+
+        if '_id' not in response or 'error' in response:
+            response = None
+
+        d.callback(response)
+
+    def get_with_attachments(self, id, rev=None):
+        d = defer.Deferred()
+
+        from twisted.internet import reactor
+        reactor.callLater(0, self._get_with_attachments, id, d, rev=rev)
+
+        return d
+
+    @defer.inlineCallbacks
+    def _get_with_attachments(self, id, d, rev=None):
+        urlpath = urllib.quote(id, "") + "?attachments=true"
+        if rev:
+            response = yield self.request('GET', path=urlpath, rev=rev)
+        else:
+            response = yield self.request('GET', path=urlpath, conflicts=True)
 
         if '_id' not in response or 'error' in response:
             response = None
@@ -481,7 +502,7 @@ class Database(object):
             cb(None, viewID=__id)
 
         del self._changesCBs[__id]
-        del self._changesRunning[__id] 
+        del self._changesRunning[__id]
         del self._lastSeq[__id]
 
         if self._changesProtocols[__id] is not None and close:
