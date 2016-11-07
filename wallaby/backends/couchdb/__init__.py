@@ -253,17 +253,7 @@ class Database(object):
             kv = dict()
             # print ka
             for k, v in ka.items():
-                if not (isinstance(v, str) or isinstance(v, unicode) or isinstance(v, int) or isinstance(v, bool)):
-                    kv[k] = json.dumps(v)
-                else:
-                    if isinstance(v, bool):
-                        if v:
-                            kv[k] = json.dumps('true')
-                        else:
-                            kv[k] = json.dumps('false')
-                    else:
-                        kv[k] = json.dumps(v)
-
+                kv[k] = json.dumps(v)
             url += '?'+urllib.urlencode(kv)
         try:
             # print "REQUEST", method, str(url), body
