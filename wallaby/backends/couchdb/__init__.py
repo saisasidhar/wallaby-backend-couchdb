@@ -253,20 +253,18 @@ class Database(object):
             kv = dict()
             # print ka
             for k, v in ka.items():
-                kv[k] = json.dumps(v)
+                if k == 'rev':
+                    kv[k] = v
+                else:
+                    kv[k] = json.dumps(v)
             url += '?'+urllib.urlencode(kv)
         try:
-            # print "REQUEST", method, str(url), body
-            response = yield self._agent.request(
-                method,
-                str(url),
-                Headers(headers),
-                body)
+            #print "REQUEST", method, str(url), body, headers, Headers(headers)
+            response = yield self._agent.request(method, str(url), headers=Headers(headers), bodyProducer=body)
 
             responseDeferred = defer.Deferred()
             response.deliverBody(protocol(responseDeferred, response.length))
             responseData = yield responseDeferred
-            # print responseData
 
             d.callback(responseData)
         except (Exception,Failure) as e:
