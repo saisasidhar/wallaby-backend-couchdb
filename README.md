@@ -8,10 +8,10 @@ For more information on wallaby visit http://wlby.freshx.de
 Installation
 ============
 
-You can install the couchdb backend with pip
+You can install this bug-fixed couchdb backend with pip using
 
 ```bash
-pip install wallaby-backend-couchdb
+pip install git+https://github.com/sveme/wallaby-backend-couchdb.git
 ```
 
 How to use
