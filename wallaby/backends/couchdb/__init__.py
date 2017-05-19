@@ -1,6 +1,7 @@
 # Copyright (c) by it's authors.
 # Some rights reserved. See LICENSE, AUTHORS.
 
+from twisted.web import client
 from twisted.web.client import Agent
 from twisted.internet import defer
 from twisted.web.http_headers import Headers
@@ -10,6 +11,8 @@ from twisted.python.failure import Failure
 import urllib, json, base64, copy
 
 from wallaby.backends.http import JSONProtocol, DataProducer, WebClientContextFactory, UnknownError, RawProtocol
+
+client._HTTP11ClientFactory.noisy = False
 
 class DocumentUpdateConflict(UnknownError):
     pass
