@@ -452,12 +452,10 @@ class Database(object):
     @defer.inlineCallbacks
     def _put_attachment(self, doc, filename, data, contentType, d):
         response = yield self.request('PUT', path=urllib.quote(doc['_id'], '')+'/'+filename, rev=doc['_rev'], body=DataProducer(data), headers={'Content-Type':[contentType]})
-
-        if 'rev' in response:
-            doc['_rev'] = response['rev']
-            d.callback(response)
-        else:
+        if 'error' in response:
             d.errback(UnknownError(response))
+        else:
+            d.callback(response)
 
     def view(self, name, **ka):
         d = defer.Deferred()
