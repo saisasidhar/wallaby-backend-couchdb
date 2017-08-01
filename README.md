@@ -11,13 +11,13 @@ Installation
 You can install this bug-fixed couchdb backend with pip using
 
 ```bash
-pip install git+https://github.com/sveme/wallaby-backend-couchdb.git
+pip install git+https://github.com/saisasidhar/wallaby-backend-couchdb.git
 ```
 
 How to use
 ==========
 
-The library is based on twisted's asynchronous pattern. To use the library in an asynchronous fassion you 
+The library is based on twisted's asynchronous pattern. To use the library in an asynchronous setup you 
 first need to create an reactor based application:
  
 ```python
